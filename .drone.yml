@@ -1,5 +1,0 @@
-build:
-  image: node
-  commands:
-    - npm -d i
-    - npm test
