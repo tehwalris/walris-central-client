@@ -5,19 +5,36 @@ var _ = require('lodash'),
   sinonChai = require('sinon-chai'),
   expect = chai.expect,
   chaiAsPromised = require('chai-as-promised'),
-  proxyquire = require('proxyquire');
+  proxyquire = require('proxyquire'),
+  SocketClientMock = require('../mocks/socket.io-client.js');
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('client', function () {
-  var Client;
+  var Client, deps, socketMock;
   beforeEach(function () {
-    Client = proxyquire('../../src/client.js', {});
+    socketMock = new SocketClientMock();
+    deps = {
+      'socket.io-client': socketMock.constructorStub
+    };
+    Client = proxyquire('../../src/client.js', deps);
   });
   it('exposes client configuration', function () {
     let config = {};
     let client = new Client(config);
     expect(client.config).to.equal(config);
+  });
+  it('passes through socket options', function () {
+    let client = new Client({}),
+      socketOptions = {},
+      connected = client.connect('url', socketOptions);
+    expect(socketMock.constructorStub).to.have.been.calledWith('url', socketOptions);
+  });
+  it('rejects promise on connection error', function () {
+    let client = new Client({}),
+      connected = client.connect();
+    socketMock.socket._handlers.connect_error();
+    return expect(connected).to.be.rejected;
   });
 });
