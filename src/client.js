@@ -1,8 +1,8 @@
 "use strict";
 
 class Client {
-  constructor () {
-    
+  constructor (config) {
+    this.config = config;
   }
 }
 
