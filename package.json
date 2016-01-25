@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha test --recursive -R nyan"
+    "test": "npm run unitTest",
+    "unitTest": "mocha test/unit --recursive -R nyan"
   },
   "keywords": [
     "voice",
