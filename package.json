@@ -1,7 +1,7 @@
 {
-  "name": "walris-central",
+  "name": "walris-central-client",
   "version": "0.1.0",
-  "description": "",
+  "description": "Client for walris-central.",
   "main": "src/index.js",
   "scripts": {
     "test": "npm run unitTest",
