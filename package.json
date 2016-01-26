@@ -2,6 +2,8 @@
   "name": "walris-central-client",
   "version": "0.1.1",
   "description": "Client for walris-central.",
+  "author": "Philippe \"tehwalris\" Voinov",
+  "license": "MIT",
   "main": "src/index.js",
   "scripts": {
     "test": "npm run unitTest",
@@ -9,10 +11,14 @@
   },
   "keywords": [
     "voice",
-    "central"
+    "central",
+    "client"
   ],
-  "author": "Philippe \"tehwalris\" Voinov",
-  "license": "MIT",
+  "homepage": "https://github.com/tehwalris/walris-central-client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tehwalris/walris-central-client.git"
+  },
   "dependencies": {
     "lodash": "^4.0.0",
     "socket.io-client": "^1.4.4"
