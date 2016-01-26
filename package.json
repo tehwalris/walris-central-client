@@ -1,6 +1,6 @@
 {
   "name": "walris-central-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Client for walris-central.",
   "author": "Philippe \"tehwalris\" Voinov",
   "license": "MIT",
