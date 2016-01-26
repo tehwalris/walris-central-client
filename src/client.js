@@ -11,7 +11,16 @@ class Client {
     let deferred = Promise.defer();
     this._socket.on('connect', () => {deferred.resolve();});
     this._socket.on('connect_error', () => {deferred.reject();});
+    this._configureSocket();
+    this._register();
     return deferred.promise;
+  }
+
+  _configureSocket () {
+  }
+
+  _register () {
+    this._socket.emit('register', this.config);
   }
 }
 

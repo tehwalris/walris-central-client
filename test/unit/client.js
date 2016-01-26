@@ -37,4 +37,13 @@ describe('client', function () {
     socketMock.socket._handlers.connect_error();
     return expect(connected).to.be.rejected;
   });
+  it('registers with central on connection, passing the whole config', function () {
+    let config = {};
+    let client = new Client(config),
+      connected = client.connect();
+    socketMock.socket._handlers.connect();
+    return expect(connected).to.be.fulfilled.then(() => {
+      expect(socketMock.socket.emit).to.have.been.calledWith('register', config);
+    });
+  });
 });

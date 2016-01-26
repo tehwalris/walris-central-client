@@ -5,6 +5,7 @@ var _ = require('lodash'),
 class Socket {
   constructor () {
     this._handlers = {};
+    this.emit = sinon.spy();
   }
 
   on (event, callback) {
