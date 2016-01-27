@@ -6,17 +6,17 @@ var _ = require('lodash'),
   expect = chai.expect,
   chaiAsPromised = require('chai-as-promised'),
   proxyquire = require('proxyquire'),
-  SocketClientMock = require('../mocks/socket.io-client.js');
+  SocketClient = require('socket-io-mocks').client;
 
 chai.use(sinonChai);
 chai.use(chaiAsPromised);
 
 describe('client', function () {
-  var Client, deps, socketMock;
+  var Client, deps, socketClient;
   beforeEach(function () {
-    socketMock = new SocketClientMock();
+    socketClient = new SocketClient();
     deps = {
-      'socket.io-client': socketMock.constructorStub
+      'socket.io-client': socketClient
     };
     Client = proxyquire('../../src/client.js', deps);
   });
@@ -41,12 +41,12 @@ describe('client', function () {
     let client = new Client(config),
       socketOptions = {},
       connected = client.connect('url', socketOptions);
-    expect(socketMock.constructorStub).to.have.been.calledWith('url', socketOptions);
+    expect(socketClient).to.have.been.calledWith('url', socketOptions);
   });
   it('rejects promise on connection error', function () {
     let client = new Client(config),
       connected = client.connect();
-    socketMock.socket._handlers.connect_error();
+    socketClient._socket._handlers.connect_error();
     return expect(connected).to.be.rejected;
   });
   describe('(successfully connected)', function () {
@@ -54,17 +54,17 @@ describe('client', function () {
     beforeEach(function () {
       client = new Client(config);
       connected = client.connect();
-      socketMock.socket._handlers.connect();
+      socketClient._socket._handlers.connect();
       return expect(connected).to.be.fulfilled;
     });
     it('registers with central on connection, passing supported profiles', function () {
-      expect(socketMock.socket.emit).to.have.been.calledWithMatch('register', {
+      expect(socketClient._socket.emit).to.have.been.calledWithMatch('register', {
         profiles: ['testProfile1', 'testProfile2']
       });
     });
     it('runs action when requested', function () {
       let data = {};
-      socketMock.socket._handlers.runAction({
+      socketClient._socket._handlers.runAction({
         profile: 'testProfile1',
         action: 'testAction',
         data: data
@@ -81,14 +81,14 @@ describe('client', function () {
         sandbox.restore();
       });
       it('does not crash if profile is not found', function () {
-        socketMock.socket._handlers.runAction({
+        socketClient._socket._handlers.runAction({
           profile: 'saoenuhtskbbth',
           action: 'testAction',
           data: {}
         });
       });
       it('does not crash if action is not found', function () {
-        socketMock.socket._handlers.runAction({
+        socketClient._socket._handlers.runAction({
           profile: 'testProfile1',
           action: 'lckga,th,r.b',
           data: {}
@@ -96,14 +96,14 @@ describe('client', function () {
       });
       it('does not crash action crashes', function () {
         config.profiles.testProfile1.actions.testAction = sinon.stub().throws();
-        socketMock.socket._handlers.runAction({
+        socketClient._socket._handlers.runAction({
           profile: 'testProfile1',
           action: 'testAction'
         });
       });
     });
     it('allows undefined data paths to passed to action', function () {
-      socketMock.socket._handlers.runAction({
+      socketClient._socket._handlers.runAction({
         profile: 'testProfile1',
         action: 'testAction'
       });

@@ -29,6 +29,7 @@
     "mocha": "^2.3.4",
     "proxyquire": "^1.7.3",
     "sinon": "^1.17.2",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "socket-io-mocks": "^0.1.3"
   }
 }
